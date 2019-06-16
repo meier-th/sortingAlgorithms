@@ -136,6 +136,36 @@ void restore_array() {
     array[14] = 1;
 }
 
+void heapify(int size, int root) {
+    int left_child = root*2+1;
+    int right_child = root*2+2;
+    int largest = root;
+    if (left_child < size && array[left_child] > array[largest]) {
+        largest = left_child;
+    }
+    if (right_child < size && array[right_child] > array[largest]) {
+        largest = right_child;
+    }
+    if (largest != root) {
+        int temp = array[root];
+        array[root] = array[largest];
+        array[largest] = temp;
+        heapify(size, largest);
+    }
+}
+
+void heap_sort(int size) {
+    for (int i = size/2-1; i >= 0; i--) {
+        heapify(size, i);
+    }
+    for (int i = size-1; i >= 0; --i) {
+        int temp = array[i];
+        array[i] = array[0];
+        array[0] = temp;
+        heapify(i, 0);
+    }
+}
+
 int main() {
     bubble_sort();
     print_array("bubble sort");
@@ -148,5 +178,8 @@ int main() {
     restore_array();
     quicksort(0, 14);
     print_array("quicksort");
+    restore_array();
+    heap_sort(15);
+    print_array("heap sort");
     return 0;
 }
