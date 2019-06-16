@@ -166,6 +166,30 @@ void heap_sort(int size) {
     }
 }
 
+void counting_sort(int range_start, int range_end, int size) {
+    int range[range_end - range_start + 1] = { 0 };
+    for (int i = 0; i < size; ++i) {
+        range[array[i]-range_start]++;
+    }
+    for (int i = 1; i < range_end - range_start + 1; ++i) {
+        range[i]+=range[i-1];
+    }
+    int output_times = 0;
+    int current = 0;
+    int write_iterator = 0;
+    while (output_times != size) {
+        if (range[current] - output_times > 0) {
+            int num = range[current] - output_times;
+            for (int i = 0; i < num; ++i) {
+                array[write_iterator] = current + range_start;
+                write_iterator++;
+                output_times++;
+            }
+        }
+        current++;
+    }
+}
+
 int main() {
     bubble_sort();
     print_array("bubble sort");
@@ -181,5 +205,8 @@ int main() {
     restore_array();
     heap_sort(15);
     print_array("heap sort");
+    restore_array();
+    counting_sort(-15, 71, 15);
+    print_array("counting sort");
     return 0;
 }
